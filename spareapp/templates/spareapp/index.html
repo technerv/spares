@@ -1,0 +1,91 @@
+{% extends 'spareapp/base.html' %}
+{% block body %}
+<h2 class="alert alert-warning text-center">Spare Parts App v1</h2>
+<div class="container mt-3">
+
+  {% for message in messages%}
+<p class="alert alert-success mt-3">{{message}}</p>
+  {% endfor %}
+
+{% if itemselect %}
+<form action="{% url 'spareapp:update_item' itemselect.id %}" method="POST">
+
+  <div class="form-group mb-3">
+    <label>Item Name</label>
+    <input type="text" value="{{itemselect.item_name}}" class="form-control" name="item_name" placeholder="Update Item Name">
+  </div>
+  <div class="form-group mb-3">
+    <label>Car Make</label>
+    <input type="text" value="{{itemselect.car_make}}" class="form-control" name="car_make" placeholder="Update Car Make">
+  </div>
+  <div class="form-group mb-3">
+    <label>Model Number</label>
+    <input type="text" value="{{itemselect.model_number}}" class="form-control" name="model_number" placeholder="Update Model Number">
+  </div>
+  <div class="form-group mb-3">
+    <label>Price</label>
+    <input type="text" value="{{itemselect.price}}" class="form-control" name="price" placeholder="Update Price">
+  </div>
+  <div class="text-center">
+  <button type="submit" class="btn btn-primary" name="submit">UPDATE</button>
+  </div>
+</form>
+
+{% else %}
+<form action="{% url 'spareapp:add_item' %}" method="POST">
+  <div class="form-group mb-3">
+    <label>Item Name</label>
+    <input type="text" class="form-control" name="item_name" placeholder="Enter Item Name">
+  </div>
+  <div class="form-group mb-3">
+    <label>Car Make</label>
+    <input type="text" class="form-control" name="car_make" placeholder="Enter Car Make">
+  </div>
+  <div class="form-group mb-3">
+    <label>Model Number</label>
+    <input type="text" class="form-control" name="model_number" placeholder="Enter Model Number">
+  </div>
+  <div class="form-group mb-3">
+    <label>Price</label>
+    <input type="text" class="form-control" name="price" placeholder="Enter Price">
+  </div>
+  <div class="text-center">
+  <button type="submit" class="btn btn-primary" name="submit">ADD</button>
+  </div>
+</form>
+{% endif %}
+<div class="mt-5">
+
+  <table class="table table-bordered mt-3">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Item Name</th>
+        <th scope="col">Car Make</th>
+        <th scope="col">Model Number</th>
+        <th scope="col">Price</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+{% for s in itemstock %}
+    <tbody>
+      <tr>
+        <th scope="row">{{forloop.counter}}</th>
+        <td>{{s.item_name}}</td>
+        <td>{{s.car_make}}</td>
+        <td>{{s.model_number}}</td>
+        <td>{{s.price}}</td>
+        <td>
+          <a href="{% url 'spareapp:edit_item' s.id %}" class="btn btn-warning">EDIT</a>
+        </td>
+        <td>
+          <a href="{% url 'spareapp:delete_item' s.id %}" class="btn btn-danger">DELETE</a>
+        </td>
+      </tr>
+    </tbody>
+{% endfor %}
+  </table>
+</div>
+</div>
+{% endblock %}
